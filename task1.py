@@ -1,45 +1,53 @@
+import numpy as np
 from PIL import Image
 
 def create_black_image():
     """Создает полностью черное изображение"""
-    W, H = 400, 300
+    H, W = 300, 400
     
-    # Создаем черное изображение (0 = черный)
-    black_image = Image.new('L', (W, H), color=0)
-    black_image.save('black.png')
+    # Создаем матрицу нулей
+    img = np.zeros((H, W), dtype=np.uint8)
+    
+    # Сохраняем изображение
+    Image.fromarray(img, mode='L').save('black.png')
     print("✓ Создано черное изображение: black.png")
 
 def create_white_image():
     """Создает полностью белое изображение"""
-    W, H = 400, 300
+    H, W = 300, 400
     
-    # Создаем белое изображение (255 = белый)
-    white_image = Image.new('L', (W, H), color=255)
-    white_image.save('white.png')
+    # Создаем матрицу со значениями 255
+    img = np.full((H, W), 255, dtype=np.uint8)
+    
+    Image.fromarray(img, mode='L').save('white.png')
     print("✓ Создано белое изображение: white.png")
 
 def create_red_image():
     """Создает полностью красное изображение"""
-    W, H = 400, 300
+    H, W = 300, 400
     
-    # Создаем красное изображение (RGB режим)
-    red_image = Image.new('RGB', (W, H), color=(255, 0, 0))
-    red_image.save('red.png')
+    # Создаем 3-канальную матрицу
+    img = np.zeros((H, W, 3), dtype=np.uint8)
+    
+    # Заполняем красный канал
+    img[:, :, 0] = 255
+    
+    Image.fromarray(img, mode='RGB').save('red.png')
     print("✓ Создано красное изображение: red.png")
 
 def create_gradient_image():
     """Создает изображение с градиентом"""
-    W, H = 400, 300
-    # Создаем новое изображение в режиме 'L'
-    grad_image = Image.new('L', (W, H))
-    pixels = grad_image.load()  # Получаем объект для изменения пикселей
+    H, W = 300, 400
+    
+    # Создаем матрицу для градиента
+    img = np.zeros((H, W), dtype=np.uint8)
+    
+    # Заполняем значениями (x + y) % 256 через присвоение
+    for y in range(H):
+        for x in range(W):
+            img[y, x] = (x + y) % 256
 
-    for x in range(W):
-        for y in range(H):
-            # Значение пикселя = (x + y) % 256
-            pixels[x, y] = (x + y) % 256
-
-    grad_image.save('gradient.png')
+    Image.fromarray(img, mode='L').save('gradient.png')
     print("✓ Создано градиентное изображение: gradient.png")
 
 def main():
